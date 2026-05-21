@@ -53,32 +53,25 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 
 ---
 
-## 5. Power Platform Environment
+## 5. Power Platform Environment ✅ CONFIRMED
 
-**Definition of done:**
-- A Power Platform environment exists that is dedicated to (or shared with) this build. Ideal name: **"EP Design Sheet (Dev)"**.
-- You know the environment's name, region, and whether it has Dataverse provisioned.
+**Status:** Environment **"EP Design Sheet (Dev)"** created — Type: **Developer**, State: **Running**, visible in both Power Platform admin center and `make.powerapps.com`.
 
-**What you need:**
-- Either the environment was created for you, OR you've been told which existing environment to use.
+**Caveats to be aware of with a Developer-type environment:**
+- Single-owner (your account only); ownership can't be transferred.
+- Auto-reclaimed after ~90 days of inactivity.
+- Smaller capacity than Sandbox/Production.
+- If the project later transitions to a team, you'll need to migrate to a Sandbox environment.
 
-**Step-by-step check:**
-1. Go to `https://admin.powerplatform.microsoft.com`.
-2. Sign in as `mvp-projects@goldenaccessventures.com` against the penbaylaw.com tenant.
-3. In the left nav, click **Environments**.
-4. Look for **"EP Design Sheet (Dev)"** (or whatever name IT designated).
-5. Click into the environment and note:
-   - **Region** (e.g., United States).
-   - **Type** (Production, Sandbox, Developer, Trial).
-   - **Dataverse**: Yes/No (look for "Database" status — should say "Available" for Dataverse).
-   - **URL** of the environment (you'll need it later).
-6. If you don't see any environment listed, go to `https://make.powerapps.com` and check the environment switcher (top right) — sometimes admin center visibility is restricted but maker access is granted.
+**Remaining follow-up:**
 
-**Pass criteria:**
-- Environment is visible and you can navigate into it.
-- Environment has Dataverse provisioned (preferred for item #9), or IT confirmed SharePoint-list approach.
+- **Confirm Developer type is acceptable for the MVP scope.** Send a one-line note to your IT contact (#14): *"FYI — I provisioned a Developer-type Power Platform environment named 'EP Design Sheet (Dev)' for the MVP build. Let me know if you'd prefer this on a Sandbox environment instead."*
 
-**If it fails:** Ask IT to either create "EP Design Sheet (Dev)" or tell you which existing environment to use.
+**Decision log entry:**
+- Environment name: `EP Design Sheet (Dev)`
+- Type: Developer
+- Region: (record from environment overview page)
+- Dataverse URL: `https://org60b4cf85.crm.dynamics.com/` ✅ provisioned
 
 ---
 
@@ -341,7 +334,7 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 | 2 | SharePoint edit on Design System 2.0 | ✅ Confirmed |
 | 3 | SharePoint read on related folders | ✅ Confirmed |
 | 4 | Permission to create subfolder | ✅ Confirmed |
-| 5 | Power Platform environment | ⏳ To check |
+| 5 | Power Platform environment | ✅ Created — Dataverse confirmed (`org60b4cf85`) |
 | 6 | Environment Maker + System Customizer | ⏳ To check |
 | 7 | DLP policy heads-up | ⏳ To check |
 | 8 | Copilot Studio access | ⏳ To check |
