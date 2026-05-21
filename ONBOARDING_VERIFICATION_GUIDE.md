@@ -1,308 +1,379 @@
-# Onboarding Checklist Verification Guide
+# Onboarding Checklist Verification Guide — Penbay Law Tenant
 
-This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` is complete and ready. Each section defines "done," lists what you need, and gives a step-by-step check.
+This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` is complete and ready, with every step explicitly anchored to the `penbaylaw.com` tenant.
 
-**Account in use:** `mvp-projects@goldenaccessventures.com`
-**Already confirmed:** Items #2, #3, #4 (SharePoint access to EP Design System 2.0)
+**Account in use:** `mvp-projects@goldenaccessventures.com` (guest in penbaylaw.com)
+
+**Critical lesson learned:** Your account's *home* tenant is `goldenaccessventures.com`. Microsoft web tools default to your home tenant on sign-in, NOT penbay. **You must actively switch tenant context to penbaylaw.com before every step** that touches Power Platform, Copilot Studio, Dataverse, M365 Copilot, or Teams. Failing to do this lands you in the wrong tenant silently — that is how the original EP Design Sheet (Dev) ended up provisioned in GAV instead of penbay.
 
 ---
 
-## 1. Identity — Licensed/Guest Account + MFA
+## Prerequisite — Tenant Context Switching (READ FIRST)
+
+Before doing anything in any Microsoft web tool below, force your tenant context to penbay. This is the single most important habit for the rest of the checklist.
+
+### One-time setup
+
+1. **Obtain penbaylaw.com's tenant GUID.** Ask your IT contact (#14). Alternatively, sign in to `https://portal.office.com` in penbay context and check Microsoft Entra admin center → Overview → Tenant ID. Record it here:
+   - **Penbay Law tenant GUID:** `f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+
+2. **Bookmark tenant-scoped URLs.** Save these in your browser, replacing `f3db2981-1aec-46c0-a3b0-85174ee5c5e0` with the GUID above:
+   - Power Platform admin: `https://admin.powerplatform.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+   - Power Apps maker: `https://make.powerapps.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+   - Power Automate maker: `https://make.powerautomate.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+   - Copilot Studio: `https://copilotstudio.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+   - M365 Copilot: `https://copilot.cloud.microsoft/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+   - Teams (web): `https://teams.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`
+
+### Before every step that touches a Microsoft web tool
+
+1. Open the tool using the **tenant-scoped bookmark** (not the bare URL).
+2. After sign-in, look at the top-right avatar / account chip. It must read:
+   > **Penbay Law**
+3. If it reads **"Golden Access Ventures"** or anything else: sign out, close the tab, reopen the tenant-scoped URL, and try again.
+4. Alternative if URL param doesn't switch context: click avatar → **Switch directory** → choose **Penbay Law**.
+
+### Verification habit
+
+- **Before starting any item below, confirm the tenant chip reads "Penbay Estate Planning Law Cent…"** (the full display name of the penbaylaw.com tenant — Microsoft truncates it in the UI).
+- **If at any point the chip flips back to "Golden Access Ventures" mid-task, STOP** and re-switch before continuing. Otherwise you risk creating resources in the wrong tenant again.
+
+### Expected behavior for guest accounts in penbay tenant
+
+When you successfully switch to penbay tenant, you may notice things that look like errors but are actually normal:
+
+- **M365 Apps panel** at `https://portal.office.com` will show: *"This is unavailable due to your account permissions and company's settings"*. This is expected — guest accounts don't get M365 app licenses in the host tenant. ✅ Not a blocker.
+- **Empty environment list** in Power Platform admin center until IT provisions the env. ✅ Expected.
+- **Limited dashboard tiles** in M365 admin pages. ✅ Expected for guests.
+
+The only things you NEED to work in penbay context are: SharePoint (already ✅), Power Platform admin (after IT grants access), Copilot Studio (after IT assigns license), and M365 Copilot agent registration UI (after IT grants permission). Everything else being limited is by design and not a problem.
+
+---
+
+## 1. Identity — Licensed/Guest Account + MFA in Penbay Tenant
 
 **Definition of done:**
-- `mvp-projects@goldenaccessventures.com` can sign in to the penbaylaw.com tenant (either as a licensed member or as a guest).
-- MFA is enrolled and required at sign-in.
-- The account appears in penbaylaw.com's Entra ID (Azure AD) directory.
+- `mvp-projects@goldenaccessventures.com` can sign in *to the penbaylaw.com tenant context*.
+- MFA is enrolled and required at sign-in to penbay.
+- The account appears in penbaylaw.com's Entra ID directory (as a guest).
 
-**What you need:**
-- The password / passkey for `mvp-projects@goldenaccessventures.com`.
-- An authenticator app (Microsoft Authenticator recommended) on your phone.
-
-**Step-by-step check:**
-1. Open a private/incognito browser window (avoid cached sessions).
-2. Go to `https://portal.office.com`.
+**Step-by-step check (penbay-scoped):**
+1. Open a private/incognito browser window.
+2. Go to `https://portal.office.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0` (with the GUID filled in).
 3. Sign in as `mvp-projects@goldenaccessventures.com`.
-   - If you see a tenant picker, choose the **penbaylaw.com** tenant. If only your home tenant appears, the guest invite hasn't been redeemed yet — check the inbox for the "You're invited" email and click **Accept invitation**.
-4. Complete the MFA challenge when prompted.
-   - If MFA is not requested, go to `https://mysignins.microsoft.com/security-info` and confirm at least one method is registered (Authenticator app, phone, or passkey). If nothing is listed, register one now.
-5. Verify your account context:
-   - Click your avatar (top right) → **View account**.
-   - Confirm the organization shown is **penbaylaw.com** (or that you can switch to it).
-6. Open `https://myaccount.microsoft.com` and confirm under **Organizations** that penbaylaw.com is listed.
+4. Complete the MFA challenge.
+   - If MFA is not enforced, go to `https://mysignins.microsoft.com/security-info` (penbay context) and confirm at least one method is registered.
+5. Click avatar (top right) → confirm chip reads **Penbay Law**.
+6. Go to `https://myaccount.microsoft.com` → **Organizations** → confirm **penbaylaw.com** is listed as one of your orgs.
 
 **Pass criteria:**
-- Sign-in succeeds against penbaylaw.com tenant.
-- MFA prompt was enforced.
-- penbaylaw.com appears as one of your organizations.
+- Sign-in succeeds against penbay tenant.
+- MFA enforced.
+- penbaylaw.com listed under your organizations.
 
-**If it fails:** Email your IT point of contact (item #14) with the exact error message and screenshot.
-
----
-
-## 2–4. SharePoint Access ✅ ALREADY CONFIRMED
-
-**Status:** Confirmed by user.
-
-**Recommended quick re-verification (5 min):**
-1. Open the [Design System 2.0 library](https://penbaylawcom.sharepoint.com/sites/LegalTechnicalDepartment/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLegalTechnicalDepartment%2FShared%20Documents%2FEP%20Design%20System%202%2E0&viewid=b4b0b9ed%2Def26%2D4974%2D9652%2Dfe80635d59d1&csf=1&CID=bc278f6d%2D9ff5%2D4bee%2D9388%2D4a3c2d8c48b4&FolderCTID=0x0120003DB69ED1374F4743AF82CDC6476740BB) signed in as `mvp-projects@goldenaccessventures.com`.
-2. Confirm you can:
-   - **Read** the folder contents (item #2/#3).
-   - **Edit**: Upload a test file (e.g., `_smoke-test.txt`), then delete it (item #2).
-   - **Create a subfolder** named `_engineering-artifacts` (or similar) at the root of the library (item #4). Leave it in place — you'll use it for build outputs.
-3. Locate the Word merge templates and clause library files referenced in the build spec (sections 12F, 12K, 12L). Confirm you can open and read them.
+**If it fails:** Email your IT contact (#14) with the exact error and screenshot.
 
 ---
 
-## 5. Power Platform Environment ✅ CONFIRMED
+## 2–4. SharePoint Access ✅ ALREADY CONFIRMED (inherently in penbay tenant)
 
-**Status:** Environment **"EP Design Sheet (Dev)"** created — Type: **Developer**, State: **Running**, visible in both Power Platform admin center and `make.powerapps.com`.
+**Status:** Confirmed. SharePoint URL is `penbaylawcom.sharepoint.com`, which is inherently penbaylaw.com — no tenant ambiguity possible. These items are genuinely complete.
 
-**Caveats to be aware of with a Developer-type environment:**
-- Single-owner (your account only); ownership can't be transferred.
-- Auto-reclaimed after ~90 days of inactivity.
-- Smaller capacity than Sandbox/Production.
-- If the project later transitions to a team, you'll need to migrate to a Sandbox environment.
-
-**Remaining follow-up:**
-
-- **Confirm Developer type is acceptable for the MVP scope.** Send a one-line note to your IT contact (#14): *"FYI — I provisioned a Developer-type Power Platform environment named 'EP Design Sheet (Dev)' for the MVP build. Let me know if you'd prefer this on a Sandbox environment instead."*
-
-**Decision log entry:**
-- Environment name: `EP Design Sheet (Dev)`
-- Type: Developer
-- Region: (record from environment overview page)
-- Dataverse URL: `https://org60b4cf85.crm.dynamics.com/` ✅ provisioned
+**Recorded:**
+- ✅ Read + edit access to the Design System 2.0 library.
+- ✅ Read access to related folders (12F, 12K, 12L templates / clause library files).
+- ✅ Permission to create a subfolder (`_engineering-artifacts/` recommended).
 
 ---
 
-## 6. Environment Maker + System Customizer Roles ✅ CONFIRMED
+## ⚠️ Open gate: Project Owner Decision (blocks #5–#10)
 
-**Status:** Smoke test passed — created a "Test Solution" in EP Design Sheet (Dev) without errors. Account has **System Administrator** on the environment, which supersedes both Environment Maker and System Customizer.
+Before touching items #5–#10, get the project owner's explicit answer on:
+
+**Question:** *The Power Platform environment work needs to live somewhere. Should we (Path 1) provision a new environment in your penbaylaw.com tenant — which means your IT side creates it and grants me System Administrator — or (Path 2) keep the dev work in my GAV tenant and hand over artifacts later?*
+
+- **Path 1** = clean end-to-end, all artifacts in your tenant from day one. Requires IT action.
+- **Path 2** = faster to start, but adds an integration step later. Item #10 (declarative agent) is harder under Path 2.
+
+**This guide assumes Path 1 going forward.** If Path 2 is chosen, re-scope items #5–#10 accordingly.
+
+---
+
+## 5. Power Platform Environment (in Penbay Tenant)
+
+**Status:** ⚠️ Pending. The existing EP Design Sheet (Dev) lives in **goldenaccessventures.com**, not penbay. A new environment must be created in penbay.
 
 **Definition of done:**
-- Your account has the privileges of **Environment Maker** and **System Customizer** on the target environment — either as named roles, or implicitly via a higher-privilege role.
+- A Power Platform environment named **EP Design Sheet (Dev)** exists in penbaylaw.com tenant.
+- Dataverse is provisioned.
+- `mvp-projects@goldenaccessventures.com` has System Administrator (or Maker + Customizer) on it.
 
-**Important note on role hierarchy:**
-- **System Administrator** is the top-level Dataverse role and is a strict superset of both Environment Maker and System Customizer. If your account has System Administrator, you have full Maker + Customizer privileges even if those roles aren't listed separately.
-- When you create a Developer-type environment, you are automatically made System Administrator on the Dataverse — so this item is usually satisfied by default.
+**Step-by-step:**
 
-**Step-by-step check:**
+### Step 5.1 — Send IT the comprehensive access brief
 
-### Look at assigned roles (informational):
-1. In `https://admin.powerplatform.microsoft.com`, open the target environment.
-2. Click **Settings** (top bar) → **Users + permissions** → **Users**.
-3. Find and click `mvp-projects@goldenaccessventures.com`.
-4. Look at **Direct Assigned Roles**. Acceptable outcomes:
-   - **System Administrator** is listed → you're covered (superset of both target roles).
-   - **Environment Maker** AND **System Customizer** are both listed → you're covered.
-   - Only one or neither is listed AND no System Administrator → roles need to be added (loop in IT).
+This is the **one-shot ask** that covers everything #5–#11 need from penbay IT. Sending it now (rather than item-by-item) saves multiple round-trips. Drop-in template:
 
-### Functional smoke test (decisive — do this regardless):
-1. Go to `https://make.powerapps.com`.
-2. Switch to the target environment (top-right environment picker).
-3. Click **Solutions** in the left nav → **+ New solution**.
-4. If the dialog opens and accepts a name/publisher without error, your Maker + Customizer privileges are working.
-5. Cancel out — don't actually create the solution yet.
+> **Subject:** Access requests for EP Design Sheet MVP build (`mvp-projects@goldenaccessventures.com`)
+>
+> Hi [name],
+>
+> [Project owner] connected us — I'm the engineer building the EP Design Sheet MVP for Penbay Law. You've already granted my guest account `mvp-projects@goldenaccessventures.com` access to the 37-artifact SharePoint library in the LegalTechnicalDepartment site, which is working great. To do the rest of the build (per the SOW — Copilot Studio, M365 Copilot, Power Automate, Dataverse, Power Apps), I need additional access in your tenant. Listing everything here so you can grant in one pass.
+>
+> **1. Power Platform environment**
+> - Create a new environment named **EP Design Sheet (Dev)** in penbaylaw.com tenant.
+> - Sandbox type preferred (Developer-type is OK if Sandbox is restricted by policy).
+> - Dataverse enabled.
+> - Add `mvp-projects@goldenaccessventures.com` as **System Administrator** on the environment.
+>
+> **2. License assignments to the guest account**
+> Please assign these licenses to `mvp-projects@goldenaccessventures.com` in your tenant:
+> - **Power Apps Premium** (or per-app plan) — for canvas/model-driven apps and Dataverse access.
+> - **Power Automate Premium** — for premium connectors and approval flows.
+> - **Microsoft Copilot Studio** — separate license/add-on; required for building the guided-interview agent.
+> - **Microsoft 365 Copilot** — required for registering and testing the declarative agent.
+>
+> If guest-account license assignment is restricted in your tenant, an alternative is to create a contractor/service account (e.g., `mvp-build@penbaylaw.com`) with these licenses; I'll use that account instead of my guest identity.
+>
+> **3. DLP / connector policy**
+> Please confirm none of these connectors are blocked by your DLP policy in the EP Design Sheet (Dev) environment:
+> - SharePoint
+> - Office 365 Outlook
+> - Approvals
+> - Microsoft Dataverse
+>
+> **4. M365 Copilot custom agent permission**
+> Please confirm I'm permitted to upload and test a custom declarative agent (`EP Design System 2.0 agent.agent`) against the LegalTechnicalDepartment SharePoint site. If M365 Copilot rollout is owned by someone else on your side, please loop them in or share their contact.
+>
+> **5. (Conditional) Teams test team**
+> If attorney confirmation will happen in Teams (per the design package), please add me to a test team in your tenant. If it'll be email-based, ignore this item.
+>
+> **Scope note:** SOW is anchored to the Microsoft 365 stack — Copilot Studio, M365 Copilot, Power Automate, Dataverse, SharePoint, Power Apps. No third-party integrations or custom Azure resources requested for phase one.
+>
+> Happy to jump on a 15-minute call if easier than back-and-forth. Thanks for the help.
 
-**Pass criteria:**
-- Role check OR smoke test confirms you have the necessary privileges.
+**Why one combined brief instead of per-item:** Items #5 (environment), #6 (roles), #7 (DLP), #8 (Copilot Studio license), #9 (Dataverse), #10 (declarative agent), and #11 (Teams) all need a different switch flipped by penbay IT. Asking once is faster than asking five times.
 
-**If it fails:** Ask IT to add Environment Maker + System Customizer (or System Administrator) to your user in the dev environment.
+### Step 5.2 — Wait for IT confirmation
+Hard blocker. Don't proceed until IT confirms environment exists and your access is in place.
+
+### Step 5.3 — Verify env exists in penbay
+1. Open the tenant-scoped admin URL: `https://admin.powerplatform.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. **Confirm the account chip reads "Penbay Law"** before doing anything else.
+3. In Environments, confirm **EP Design Sheet (Dev)** appears.
+4. Click into it. Note the **Tenant** / **Organization** info — should be Penbay Law.
+5. Confirm Dataverse URL is shown (will be a `https://orgXXXXX.crm.dynamics.com/` distinct from the GAV one).
+6. Record:
+   - Environment ID: `__________`
+   - Organization ID: `__________`
+   - Dataverse URL: `__________`
+   - Region: `__________`
+   - Type: `__________` (Developer / Sandbox / Production)
+
+**Pass criteria:** Env visible in penbay tenant context, Dataverse provisioned, details recorded.
 
 ---
 
-## 7. DLP Policy Heads-Up (Connectors) ✅ FUNCTIONAL CHECK PASSED
+## 6. Environment Maker + System Customizer Roles (in Penbay Env)
 
-**Status:** All four connectors loaded in a `_dlp-smoke-test` flow in EP Design Sheet (Dev) without a "blocked by admin" banner:
-- SharePoint → "Connected to SharePoint"
-- Office 365 Outlook → "Connected to Office 365 Outlook"
-- Approvals → "Connected to Standard approvals"
-- Microsoft Dataverse → "Connected to Microsoft Dataverse"
+**Tenant Context:** Must be in Penbay Law. Verify chip before starting.
 
-**Remaining decision — DLP owner heads-up:**
-- **Option A:** Send the heads-up to your IT contact (#14). Suggested wording: *"FYI — the EP Design Sheet (Dev) build will use SharePoint, Office 365 Outlook, Approvals, and Microsoft Dataverse connectors. I've confirmed none are blocked in my Developer environment. Flagging in case tenant-wide policy changes."*
-- **Option B:** Document the skip in the build plan: *"DLP heads-up skipped — Developer environment is personal/single-owner and functional smoke test confirmed no blocks. Re-evaluate if migrating to Sandbox."*
+**Step-by-step:**
 
-**Housekeeping:** delete the `_dlp-smoke-test` flow once item #7 is fully closed.
+### Step 6.1 — Role check (informational)
+1. Open `https://admin.powerplatform.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law**.
+3. Click into **EP Design Sheet (Dev)** → **Settings → Users + permissions → Users**.
+4. Find `mvp-projects@goldenaccessventures.com`.
+5. Look at **Direct Assigned Roles**. Acceptable:
+   - **System Administrator** is listed → covered (superset of both target roles).
+   - **Environment Maker** AND **System Customizer** both listed → covered.
 
----
+### Step 6.2 — Functional smoke test (decisive)
+1. Open `https://make.powerapps.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law**.
+3. Switch to **EP Design Sheet (Dev)** in the environment picker.
+4. Click **Solutions → + New solution**.
+5. If dialog opens cleanly (accepts name/publisher), privileges are working.
+6. **Cancel** — do not actually create the solution.
 
-## 8. Copilot Studio Access
+**Pass criteria:** Role list shows expected role OR smoke test succeeds.
 
-**Definition of done:**
-- You can open Copilot Studio in the target environment and create a new copilot/agent.
-
-**Step-by-step check:**
-1. Go to `https://copilotstudio.microsoft.com`.
-2. Sign in as `mvp-projects@goldenaccessventures.com`.
-3. Use the environment picker (top right) to switch to the target environment.
-4. Click **Create** in the left nav.
-5. You should see options for **New agent** (or "New copilot"). Click into the dialog.
-6. If the dialog opens without an error and you see the option to name a new agent, access is working.
-7. **Don't create the agent yet** — just confirm the dialog opens. Cancel out.
-
-**Pass criteria:**
-- Copilot Studio loads, the target environment is selectable, and the "New agent" flow opens.
-
-**If it fails:**
-- "License required" error → IT needs to assign a Copilot Studio license to your account.
-- Environment not visible → confirm item #6 first (Maker role missing means environment is hidden).
+**If it fails:** Loop IT — they need to add System Administrator (or Maker + Customizer) to your user in penbay env.
 
 ---
 
-## 9. Dataverse Table Creation Permission
+## 7. DLP Policy Heads-Up (Connectors in Penbay Env)
 
-**Definition of done:**
-- You can create a new custom table in the target environment's Dataverse.
-- Decision logged: **Dataverse** or **SharePoint lists** as the data store.
+**Tenant Context:** Must be in Penbay Law. DLP policies are per-tenant + per-environment — a result in GAV does NOT carry over.
 
-**Step-by-step check:**
-1. Go to `https://make.powerapps.com`.
-2. Switch to the target environment.
-3. Click **Tables** in the left nav.
-4. Click **+ New table → New table** (not "Set of tables").
-5. In the dialog:
-   - Display name: `EP Smoke Test`
-   - Plural: `EP Smoke Tests`
-6. Click **Save**. Wait for table provisioning (~30 seconds).
-7. If it succeeds, you have create permission.
-8. **Delete the smoke-test table** immediately: open the table → **Edit → Delete table**.
+**Step-by-step:**
 
-**Pass criteria:**
-- Smoke-test table created without permission error, then deleted cleanly.
+### Step 7.1 — Connector smoke test in penbay env
+1. Open `https://make.powerautomate.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law**.
+3. Switch to **EP Design Sheet (Dev)**.
+4. **+ Create → Instant cloud flow** → name it `_dlp-smoke-test-penbay` → trigger **Manually trigger a flow** → Create.
+5. Add each connector in turn, watching only for a **"blocked by admin"** banner (config errors are fine to ignore):
+   - **SharePoint** — "Get items"
+   - **Office 365 Outlook** — "Send an email (V2)"
+   - **Approvals** — "Start and wait for an approval"
+   - **Microsoft Dataverse** — "List rows"
+6. Note which (if any) show a block banner.
+7. **Delete** the test flow when done.
+
+### Step 7.2 — DLP owner heads-up
+Send (or confirm IT already covered in #5.1):
+> *"FYI — the EP Design Sheet (Dev) build in penbaylaw.com will use SharePoint, Office 365 Outlook, Approvals, and Microsoft Dataverse connectors. None are blocked in this environment per smoke test. Flagging for awareness."*
+
+**Pass criteria:** All four connectors load without a block banner AND heads-up sent (or confirmed not required).
+
+---
+
+## 8. Copilot Studio Access (in Penbay Tenant)
+
+**Tenant Context:** Must be in Penbay Law.
+
+**Step-by-step:**
+1. Open `https://copilotstudio.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law** (NOT Golden Access Ventures).
+3. Click the environment picker (top-right).
+4. Under **Supported environments**, confirm **EP Design Sheet (Dev)** appears.
+   - If only "Golden Access Ventures" or unrelated GAV environments appear, your tenant context is wrong — re-switch.
+   - If penbay tenant is correct but EP Design Sheet (Dev) is missing, your Copilot Studio license isn't applied — loop IT.
+5. Select **EP Design Sheet (Dev)**.
+6. Click **+ Create agent** → confirm dialog opens → **Cancel** (don't create yet).
+
+**Pass criteria:** Copilot Studio loads in penbay tenant, EP Design Sheet (Dev) selectable, agent creation dialog opens cleanly.
+
+---
+
+## 9. Dataverse Table Creation Permission (in Penbay Env)
+
+**Tenant Context:** Must be in Penbay Law.
+
+**Step-by-step:**
+1. Open `https://make.powerapps.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law**.
+3. Switch to **EP Design Sheet (Dev)**.
+4. Click **Tables** → **+ New table → New table**.
+5. Display name: `EP Smoke Test`. Plural: `EP Smoke Tests`. Save.
+6. Wait ~30s for provisioning. If it succeeds, you have create permission.
+7. **Delete** the smoke-test table: open it → **Edit → Delete table**.
+
+**Pass criteria:** Smoke-test table created without error and cleanly deleted.
 
 **Decision log:**
-- If Dataverse worked → proceed with Dataverse as the data store.
-- If Dataverse is blocked or unavailable → confirm with IT that SharePoint lists are the fallback, and update the build plan.
-
-**If it fails:** System Customizer role is missing (loop back to item #6).
+- Dataverse worked → use Dataverse as the data store.
+- Dataverse failed/blocked → confirm with IT that SharePoint lists are the fallback, and adjust the build plan.
 
 ---
 
-## 10. M365 Declarative Agent Registration
+## 10. M365 Declarative Agent Registration (in Penbay Tenant)
 
-**Definition of done:**
-- You can register and test the `EP Design System 2.0 agent.agent` declarative agent against the penbaylaw.com SharePoint site.
-- The IT owner of M365 Copilot agent rollout is aware and has approved.
+**Tenant Context:** Must be in Penbay Law — and this is the item most affected by tenant choice. Declarative agents need to be deployed in the tenant where the users live.
 
-**Step-by-step check:**
+**Step-by-step:**
 
-### Prerequisite — confirm the IT owner is looped in:
-1. Identify who owns the M365 Copilot rollout (ask your IT contact, item #14).
-2. Send them a short note: *"I'll be registering a declarative agent (`EP Design System 2.0 agent.agent`) for testing against the LegalTechnicalDepartment SharePoint site. Confirming you're aware and that upload of custom agents is permitted for my account."*
+### Step 10.1 — Confirm M365 Copilot rollout owner is looped in
+1. Identify the owner (ask IT contact #14 — may be the same person).
+2. If not already covered by your initial brief in #5.1, send:
+   > *"I'll be registering a declarative agent (`EP Design System 2.0 agent.agent`) for testing against the LegalTechnicalDepartment SharePoint site in penbay tenant. Confirming you're aware and upload of custom agents is permitted for my account."*
 3. Get written acknowledgment.
 
-### Functional check (lightweight):
-1. Go to `https://copilot.cloud.microsoft` (Microsoft 365 Copilot) signed in as `mvp-projects@goldenaccessventures.com`.
-2. Look for **Agents** or **Create an agent** in the side panel.
-3. Alternatively, open Teams → Apps → **Build your own app / Upload a custom app**.
-4. Confirm you have an **Upload** or **Sideload** option for custom agents (`.zip` package containing the declarative agent manifest).
+### Step 10.2 — Functional check (lightweight)
+1. Open `https://copilot.cloud.microsoft/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+2. Confirm tenant chip = **Penbay Law**.
+3. Look for **Agents** or **Create / Upload custom agent** in the side panel.
+4. Confirm an **Upload / Sideload** option exists for custom agent packages (`.zip` containing the declarative agent manifest).
+5. If "blocked by admin" banner appears → loop IT.
 
-### Decisive check (when you're ready):
-1. Build a minimal `.agent` package (declarative agent manifest + instructions JSON).
-2. Upload it via Teams Admin Center or Copilot Studio's "Publish" path.
-3. Confirm it appears in your Copilot agent list and responds when invoked.
+### Step 10.3 — Decisive check (later, when ready)
+1. Build a minimal `.agent` package.
+2. Upload via Teams Admin Center or Copilot Studio's Publish path *in penbay tenant context*.
+3. Confirm it appears in the agent list and responds.
 
-**Pass criteria:**
-- IT owner has acknowledged in writing.
-- You can reach the agent upload UI without a "blocked by admin" error.
-
-**If it fails:** Tenant policy may block custom agent upload — IT needs to enable it for your account or the dev environment.
+**Pass criteria:** Written acknowledgment from M365 Copilot owner AND upload UI reachable in penbay tenant without a block banner.
 
 ---
 
-## 11. Teams Test Channel (Conditional)
+## 11. Teams Test Channel (Conditional, Penbay Tenant)
 
-**Definition of done — IF attorney confirmation is via Teams:**
-- You are a member of a test team where you can post and read messages.
-- You have the team name, channel name, and link.
+**Tenant Context:** If using Teams path, must be in Penbay Law.
 
-**Definition of done — IF attorney confirmation is email-based:**
-- Skip this entirely. Note in your build plan: "Attorney confirmation is email-based per onboarding decision."
-
-**Step-by-step check (Teams path):**
-1. Confirm with the project owner: is attorney confirmation happening in Teams or email?
-2. If Teams:
-   - Open Teams (`https://teams.microsoft.com`).
-   - Look for the test team in your team list. Common name: something like "EP Design Sheet Test" or "Legal Tech Test."
-   - If missing, ask IT to add you to the test team.
-   - Once added, post a test message: `smoke test — please ignore`.
-   - Confirm you can read replies and reactions.
+**Step-by-step:**
+1. Confirm with project owner: Teams or email for attorney confirmation?
+2. **If email:** skip this item; record in build plan: *"Attorney confirmation is email-based per onboarding decision."*
+3. **If Teams:**
+   - Open `https://teams.microsoft.com/?tenantId=f3db2981-1aec-46c0-a3b0-85174ee5c5e0`.
+   - Confirm you can see Penbay Law in the org switcher (top-left, sometimes shown as the tenant name).
+   - Ask IT to add you to a penbay test team (suggest name: "EP Design Sheet Test").
+   - Once added: post `smoke test — please ignore`.
+   - Confirm you can read messages and reactions.
    - Delete the test message.
 
-**Pass criteria:**
-- Teams: you're a member, can post, and can read. OR
-- Email: project owner has confirmed email-based and this item is skipped.
+**Pass criteria:** Teams path = member of penbay test team with read+write confirmed. OR email path = decision documented.
 
 ---
 
 ## 12. Anonymized Sample Matter Records
 
-**Definition of done:**
-- 3–5 sample matter records are in hand, covering the **Unified Long-Term Marriage** track.
-- Each record has **real-shape data** (correct field names, plausible ranges) but **no real PII**.
-- Files are stored in your `_engineering-artifacts` subfolder (created in item #4) or another agreed location.
+**Tenant Context:** Files end up in penbay SharePoint (`_engineering-artifacts/sample-matters/`), but this is a data-handoff task, not a Microsoft-tool task.
 
-**Step-by-step check:**
-1. Ask the project owner or paralegal lead to provide the records.
-2. For each record, verify:
-   - Field names match the production schema (party names, dates, marriage duration, asset categories, etc.).
-   - **No real PII**: names should be obvious placeholders (e.g., "Jane Doe", "John Smith"), addresses should be fake, SSNs/account numbers must be redacted or fake.
-   - At least one record exercises **edge cases** (e.g., commingled assets, separate property claims, long marriage exceeding the threshold).
-3. Open each file and scan for accidental PII leaks (real-looking SSNs, real addresses, real client names you recognize).
-4. Save all five into a folder named `sample-matters/` inside `_engineering-artifacts/`.
+**Step-by-step:**
+1. Ask project owner / paralegal lead for 3–5 anonymized records covering the **Unified Long-Term Marriage** track.
+2. For each record verify:
+   - Field names match production schema.
+   - **No real PII** — fake names, addresses, account numbers.
+   - At least one edge case (commingled assets, separate-property claims, long-marriage threshold).
+3. Spot-check each file for accidental real-looking SSNs, addresses, or recognizable client names.
+4. Save into `_engineering-artifacts/sample-matters/` in the penbay SharePoint library.
 
-**Pass criteria:**
-- 3–5 files received, all anonymized, all cover the Unified Long-Term Marriage track.
-- No real PII visible on inspection.
+**Pass criteria:** 3–5 anonymized records received, edge cases covered, no PII leaks, stored in penbay SharePoint.
 
 ---
 
 ## 13. Clause Library Export
 
-**Definition of done:**
-- You have the current clause library in its native format (Word, Excel, or SharePoint list export).
-- File is stored alongside the sample matters.
+**Tenant Context:** Penbay SharePoint storage.
 
-**Step-by-step check:**
-1. Ask the project owner: "In what format does the team maintain the clause library today?"
-2. Get the export:
-   - **Word**: a `.docx` with all clauses.
-   - **Excel**: a `.xlsx` with one clause per row.
-   - **SharePoint list**: export to CSV via the list's **Export to CSV** button, or get a link to the list itself.
-3. Open the file and confirm:
-   - Each clause has a stable identifier (clause ID, name, or numbering).
-   - Clauses are categorized (by section, topic, or matter type).
-   - You can identify clauses related to the build spec sections **12F, 12K, 12L**.
-4. Save into `_engineering-artifacts/clause-library/`.
+**Step-by-step:**
+1. Ask the project owner: "In what format does the team maintain the clause library today?" (Word, Excel, SharePoint list)
+2. Get the export.
+3. Open and confirm:
+   - Each clause has a stable identifier.
+   - Clauses are categorized.
+   - Clauses for build-spec sections **12F, 12K, 12L** are findable.
+4. Save into `_engineering-artifacts/clause-library/` in penbay SharePoint.
 
-**Pass criteria:**
-- Export received in a parseable format.
-- 12F, 12K, 12L referenced clauses are findable.
+**Pass criteria:** Export received, parseable, 12F/12K/12L clauses findable.
 
 ---
 
-## 14. IT Point of Contact
+## 14. IT Point of Contact (Penbay Law)
 
-**Definition of done:**
-- You have a name and email of one person on penbaylaw.com's IT side.
-- You've verified the email works by sending an intro note.
+**Step-by-step:**
+1. Get name + email of one penbaylaw.com IT person from the project owner.
+2. Send an intro email from `mvp-projects@goldenaccessventures.com`:
+   > Hi [Name], [Project owner] connected us — I'm the engineer building the EP Design Sheet MVP. I'll be pinging you for permission changes (DLP, agent uploads, environment roles, etc.). Just establishing the channel here.
+3. Confirm no bounce within 1 hour.
+4. Save contact as `Penbay IT — primary`.
 
-**Step-by-step check:**
-1. Ask the project owner for the IT contact name and email.
-2. Send a short intro email from `mvp-projects@goldenaccessventures.com`:
-   > Hi [Name],
-   >
-   > [Project owner] connected us — I'm the engineer building the EP Design Sheet MVP. I'll likely need to ping you directly when permission switches need flipping (DLP, agent uploads, environment roles, etc.). Just establishing the channel here — no action needed.
-   >
-   > Thanks,
-   > [Your name]
-3. Confirm the email delivers (no bounce within 1 hour).
-4. Save the contact in your address book labeled `Penbay IT — primary`.
+**Pass criteria:** Contact recorded, intro email delivered.
 
-**Pass criteria:**
-- Contact name + email recorded.
-- Intro email sent and not bounced.
+---
+
+## Cleanup — Remove the GAV-Tenant Environment
+
+Once everything above is ✅, remove the stale GAV environment to avoid name collision and confusion:
+
+1. Open `https://admin.powerplatform.microsoft.com` (this time **without** the penbay tenant param — defaults to GAV).
+2. Confirm tenant chip = **Golden Access Ventures**.
+3. Click into **EP Design Sheet (Dev)**.
+4. Click **⋯ → Delete environment**.
+5. Confirm deletion.
+
+After deletion, you should only have the penbay-tenant **EP Design Sheet (Dev)** going forward.
 
 ---
 
@@ -310,35 +381,51 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Identity (licensed/guest + MFA) | ⏳ To check |
-| 2 | SharePoint edit on Design System 2.0 | ✅ Confirmed |
-| 3 | SharePoint read on related folders | ✅ Confirmed |
-| 4 | Permission to create subfolder | ✅ Confirmed |
-| 5 | Power Platform environment | ✅ Created — Dataverse confirmed (`org60b4cf85`) |
-| 6 | Environment Maker + System Customizer | ✅ Confirmed (System Admin) |
-| 7 | DLP policy heads-up | ✅ Connectors unblocked — decide on heads-up |
-| 8 | Copilot Studio access | ⏳ To check |
-| 9 | Dataverse table creation | ⏳ To check |
-| 10 | M365 declarative agent registration | ⏳ To check |
-| 11 | Teams test channel (if applicable) | ⏳ Conditional |
-| 12 | Sample matter records (3–5) | ⏳ To check |
-| 13 | Clause library export | ⏳ To check |
-| 14 | IT point of contact | ⏳ To check |
+| 1 | Identity (penbay tenant + MFA) | ⏳ To verify in penbay context |
+| 2 | SharePoint edit on Design System 2.0 | ✅ Confirmed (penbay-inherent) |
+| 3 | SharePoint read on related folders | ✅ Confirmed (penbay-inherent) |
+| 4 | Permission to create subfolder | ✅ Confirmed (penbay-inherent) |
+| 5 | Power Platform environment in penbay | ⏳ Awaiting IT provisioning |
+| 6 | Maker + Customizer in penbay env | ⏳ Pending #5 |
+| 7 | DLP heads-up in penbay env | ⏳ Pending #5 |
+| 8 | Copilot Studio access in penbay | ⏳ Pending #5 |
+| 9 | Dataverse table creation in penbay | ⏳ Pending #5 |
+| 10 | M365 declarative agent in penbay | ⏳ Pending #5 + Copilot owner ack |
+| 11 | Teams test channel (penbay) | ⏳ Conditional on path |
+| 12 | Sample matter records | ⏳ Request from project owner |
+| 13 | Clause library export | ⏳ Request from project owner |
+| 14 | IT point of contact (penbay) | ⏳ To establish |
+| — | Cleanup: delete GAV env | ⏳ Final step |
 
 ---
 
 ## Recommended Order
 
-Do them in this sequence — each builds on the previous:
+Run items in this sequence — each builds on the previous:
 
-1. **#14** (IT contact) — needed for everything else when blocked.
-2. **#1** (identity + MFA) — gateway to all M365/Power Platform access.
-3. **#5** (environment exists) — prerequisite for #6–#10.
-4. **#6** (roles on environment) — prerequisite for #7–#10.
-5. **#7** (DLP) — gate that can silently block #8–#10.
-6. **#8** (Copilot Studio) and **#9** (Dataverse) — parallel.
-7. **#10** (declarative agent) — needs IT acknowledgment lead time.
-8. **#11** (Teams) — clarify path with project owner first.
-9. **#12** (sample matters) and **#13** (clause library) — parallel, request from project owner together.
+1. **Prerequisite** — get penbay tenant GUID, save bookmarks, practice tenant chip verification.
+2. **#14** — establish penbay IT contact (needed for #5).
+3. **#1** — verify your guest identity works in penbay context.
+4. **Project owner decision** — confirm Path 1.
+5. **#5.1** — send IT the provisioning brief.
+6. **#5.2** — wait for IT confirmation (hard blocker).
+7. **#5.3** — verify env in penbay context, record details.
+8. **#6** — smoke test roles in penbay env.
+9. **#7** — connector smoke test in penbay env.
+10. **#8** + **#9** in parallel — Copilot Studio + Dataverse, both in penbay.
+11. **#10** — declarative agent registration in penbay.
+12. **#11** — Teams (if Teams path).
+13. **#12** + **#13** in parallel — request sample data + clause library.
+14. **Cleanup** — delete the GAV-tenant EP Design Sheet (Dev).
 
-When all items are ✅, you're cleared to start the build.
+When every row in the master checklist is ✅, onboarding is complete and you're cleared to start the build.
+
+---
+
+## Anti-Drift Habits
+
+Three habits to internalize so the GAV-tenant slip doesn't repeat:
+
+1. **Always open Microsoft tools via the tenant-scoped bookmark**, never via plain URL.
+2. **Read the account chip before every action.** If it says anything other than "Penbay Law," stop and switch.
+3. **When in doubt about which tenant a resource lives in**, try adding another `@goldenaccessventures.com` user to it: if no guest-invite flow appears, you're in GAV; if a guest invite is required, you're in penbay.
