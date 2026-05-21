@@ -111,39 +111,19 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 
 ---
 
-## 7. DLP Policy Heads-Up (Connectors)
+## 7. DLP Policy Heads-Up (Connectors) ✅ FUNCTIONAL CHECK PASSED
 
-**Definition of done:**
-- Whoever owns Data Loss Prevention policy in the tenant has been notified that this build will use these connectors:
-  - **SharePoint**
-  - **Office 365 Outlook**
-  - **Approvals**
-  - **Dataverse**
-- None of these connectors are blocked in the target environment's DLP policy.
+**Status:** All four connectors loaded in a `_dlp-smoke-test` flow in EP Design Sheet (Dev) without a "blocked by admin" banner:
+- SharePoint → "Connected to SharePoint"
+- Office 365 Outlook → "Connected to Office 365 Outlook"
+- Approvals → "Connected to Standard approvals"
+- Microsoft Dataverse → "Connected to Microsoft Dataverse"
 
-**Step-by-step check:**
+**Remaining decision — DLP owner heads-up:**
+- **Option A:** Send the heads-up to your IT contact (#14). Suggested wording: *"FYI — the EP Design Sheet (Dev) build will use SharePoint, Office 365 Outlook, Approvals, and Microsoft Dataverse connectors. I've confirmed none are blocked in my Developer environment. Flagging in case tenant-wide policy changes."*
+- **Option B:** Document the skip in the build plan: *"DLP heads-up skipped — Developer environment is personal/single-owner and functional smoke test confirmed no blocks. Re-evaluate if migrating to Sandbox."*
 
-### Quick test (functional — fastest signal):
-1. Go to `https://make.powerautomate.com`.
-2. Switch to the target environment.
-3. Click **+ Create → Instant cloud flow**.
-4. Name it `_dlp-smoke-test`, choose **Manually trigger a flow**, click **Create**.
-5. Click **+ New step** and search for each connector in turn:
-   - **SharePoint** — try adding "Get items"
-   - **Office 365 Outlook** — try adding "Send an email (V2)"
-   - **Approvals** — try adding "Start and wait for an approval"
-   - **Microsoft Dataverse** — try adding "List rows"
-6. If any connector shows a banner like *"This connector is blocked by your admin"* or *"Cannot be used in this environment due to data loss prevention policies,"* note which one.
-7. Delete the test flow when done.
-
-### Admin confirmation:
-1. Identify the DLP policy owner — usually a tenant admin (your IT contact in item #14 will know).
-2. Send them a one-line note: *"FYI — the EP Design Sheet build in the [environment name] environment will use SharePoint, Office 365 Outlook, Approvals, and Dataverse connectors. Please confirm none are blocked."*
-3. Wait for written confirmation.
-
-**Pass criteria:**
-- All four connectors can be added to a flow without DLP blocking.
-- Written confirmation from the DLP owner.
+**Housekeeping:** delete the `_dlp-smoke-test` flow once item #7 is fully closed.
 
 ---
 
@@ -336,7 +316,7 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 | 4 | Permission to create subfolder | ✅ Confirmed |
 | 5 | Power Platform environment | ✅ Created — Dataverse confirmed (`org60b4cf85`) |
 | 6 | Environment Maker + System Customizer | ✅ Confirmed (System Admin) |
-| 7 | DLP policy heads-up | ⏳ To check |
+| 7 | DLP policy heads-up | ✅ Connectors unblocked — decide on heads-up |
 | 8 | Copilot Studio access | ⏳ To check |
 | 9 | Dataverse table creation | ⏳ To check |
 | 10 | M365 declarative agent registration | ⏳ To check |
