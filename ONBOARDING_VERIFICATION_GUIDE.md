@@ -75,39 +75,39 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 
 ---
 
-## 6. Environment Maker + System Customizer Roles
+## 6. Environment Maker + System Customizer Roles ✅ CONFIRMED
+
+**Status:** Smoke test passed — created a "Test Solution" in EP Design Sheet (Dev) without errors. Account has **System Administrator** on the environment, which supersedes both Environment Maker and System Customizer.
 
 **Definition of done:**
-- Your account has the **Environment Maker** role on the target environment.
-- Your account has the **System Customizer** role on the target environment (this requires Dataverse).
+- Your account has the privileges of **Environment Maker** and **System Customizer** on the target environment — either as named roles, or implicitly via a higher-privilege role.
+
+**Important note on role hierarchy:**
+- **System Administrator** is the top-level Dataverse role and is a strict superset of both Environment Maker and System Customizer. If your account has System Administrator, you have full Maker + Customizer privileges even if those roles aren't listed separately.
+- When you create a Developer-type environment, you are automatically made System Administrator on the Dataverse — so this item is usually satisfied by default.
 
 **Step-by-step check:**
 
-### Check Environment Maker:
+### Look at assigned roles (informational):
 1. In `https://admin.powerplatform.microsoft.com`, open the target environment.
-2. Click **Settings** (top bar) → **Users + permissions** → **Application users** is one path; for environment roles use **Settings → Users + permissions → Users**.
-   - Alternatively: from the environment's overview, click **See all** under Access.
-3. Search for `mvp-projects@goldenaccessventures.com`.
-4. Confirm the role list includes **Environment Maker**.
+2. Click **Settings** (top bar) → **Users + permissions** → **Users**.
+3. Find and click `mvp-projects@goldenaccessventures.com`.
+4. Look at **Direct Assigned Roles**. Acceptable outcomes:
+   - **System Administrator** is listed → you're covered (superset of both target roles).
+   - **Environment Maker** AND **System Customizer** are both listed → you're covered.
+   - Only one or neither is listed AND no System Administrator → roles need to be added (loop in IT).
 
-### Check System Customizer (requires Dataverse):
-1. From the environment overview, click **Settings → Users + permissions → Users**.
-2. Click your user record.
-3. Click **Manage security roles** (or **Manage roles**).
-4. Confirm **System Customizer** is checked.
-
-### Functional smoke test (best confirmation):
+### Functional smoke test (decisive — do this regardless):
 1. Go to `https://make.powerapps.com`.
-2. Switch to the target environment (top right environment picker).
-3. Click **+ Create** in the left nav.
-4. Confirm you can see options for **Canvas app**, **Model-driven app**, and **Solution**.
-5. Click **Solutions** in the left nav → **+ New solution**. If the dialog opens without an error, your Maker + Customizer roles are working.
-6. Cancel out of the new solution dialog (don't actually create one yet).
+2. Switch to the target environment (top-right environment picker).
+3. Click **Solutions** in the left nav → **+ New solution**.
+4. If the dialog opens and accepts a name/publisher without error, your Maker + Customizer privileges are working.
+5. Cancel out — don't actually create the solution yet.
 
 **Pass criteria:**
-- Both roles appear in the role list, OR the functional smoke test succeeds.
+- Role check OR smoke test confirms you have the necessary privileges.
 
-**If it fails:** Ask IT to add both roles to your user in the dev environment.
+**If it fails:** Ask IT to add Environment Maker + System Customizer (or System Administrator) to your user in the dev environment.
 
 ---
 
@@ -335,7 +335,7 @@ This guide walks through how to verify each item from `ONBARODING_CHECKLIST.md` 
 | 3 | SharePoint read on related folders | ✅ Confirmed |
 | 4 | Permission to create subfolder | ✅ Confirmed |
 | 5 | Power Platform environment | ✅ Created — Dataverse confirmed (`org60b4cf85`) |
-| 6 | Environment Maker + System Customizer | ⏳ To check |
+| 6 | Environment Maker + System Customizer | ✅ Confirmed (System Admin) |
 | 7 | DLP policy heads-up | ⏳ To check |
 | 8 | Copilot Studio access | ⏳ To check |
 | 9 | Dataverse table creation | ⏳ To check |
